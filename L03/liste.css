@@ -5,14 +5,17 @@ body {
     padding: 20px;
 }
 
+
 #app {
-    max-width: 600px;
+    width: 100%; 
     margin: auto;
     background: white;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; 
 }
+
 
 h1{
     text-allign: center;

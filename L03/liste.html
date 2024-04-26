@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="liste.css" type="text/javascript" charset="UTF-8" ></script>
     <link rel="stylesheet" href="./liste.css " > 
+    <script src="liste.ts" type="text/typescript" charset="UTF-8"></script>
+    <script src="./liste.js" type="text/javascript"></script>
     <title>Einkaufliste</title>
 </head>
 <body>
@@ -15,28 +16,13 @@
         <ul id="shoppingList">
             
             <li>
-                <span>1 Apfel</span>
-                <span>Kommentar</span>
-                <button class="kaufen" onclick="handleClick(this)">zu kaufen</button>
-                <button class="gekauft" onclick="handleClick(this)">gekauft</button>
+                <input type="number" class="menge-input" placeholder="Anzahl">
+                <input type="text" class="artikel-input" placeholder="Artikel">
+                <input type="text" class="kommentar-input" placeholder="Kommentare">
+                <button class="kaufen" onclick="handleClick(this, 'green')">zu kaufen</button>
+                <button class="gekauft" onclick="handleClick(this, 'yellow')">gekauft</button>
                 <button class="entfernen" onclick="handleClick(this)">entfernen</button>
-                <span>Datum</span>
-            </li>
-            <li>
-                <span>4 Orangen</span>
-                <span>Kommentar</span>
-                <button class="kaufen" onclick="handleClick(this)">zu kaufen</button>
-                <button class="gekauft" onclick="handleClick(this)">gekauft</button>
-                <button class="entfernen" onclick="handleClick(this)">entfernen</button>
-                <span>Datum</span>
-            </li>
-            <li>
-                <span>5 Karotten</span>
-                <span>Kommentar</span>
-                <button class="kaufen" onclick="handleClick(this)">zu kaufen</button> 
-                <button class="gekauft" onclick="handleClick(this)">gekauft</button>
-                <button class="entfernen" onclick="handleClick(this)">entfernen</button>
-                <span>Datum</span>
+                <span id="date">Datum</span>
             </li>
         </ul>
     </ul>
@@ -44,13 +30,28 @@
     <button id="addButton" onclick="handleButtonClick(this)">Hinzufügen</button>
 </div>
 <script>
-    function handleClick(button) {
+    
+    function handleClick(button, color) {
+        const artikelInput = button.parentNode.querySelector('.artikel-input');
+        artikelInput.style.backgroundColor = color;
         console.log("Button wurde geklickt und das beschriebene wird ausgeführt:", button.innerText);
     }
+
 
     function handleButtonClick(button) {
         console.log("Button wurde geklickt und das beschriebene wird ausgeführt:", button.innerText);
     }
+
+    
+    function updateDate() {
+        const dateElements = document.querySelectorAll('#date');
+        dateElements.forEach(dateElement => {
+            dateElement.innerText = new Date().toLocaleDateString();
+        });
+        
+    }
+    updateDate();
+
 </script>
 
 </body>
