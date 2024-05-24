@@ -1,4 +1,11 @@
 "use strict";
+/*
+Aufgabe: <Ententeich>
+Name: <Alita Maier>
+Matrikel: <275106>
+Datum: <25.05.24>
+Quellen: <Zusammenarbeit mit Franciska Egri>
+*/
 var L09_Ententeich;
 (function (L09_Ententeich) {
     window.addEventListener("load", handleLoad);

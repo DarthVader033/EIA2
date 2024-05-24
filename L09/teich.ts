@@ -1,3 +1,11 @@
+/*
+Aufgabe: <Ententeich>
+Name: <Alita Maier>
+Matrikel: <275106>
+Datum: <25.05.24>
+Quellen: <Zusammenarbeit mit Franciska Egri>
+*/
+
 namespace L09_Ententeich {
     window.addEventListener("load", handleLoad);
     export let crc2: CanvasRenderingContext2D;
