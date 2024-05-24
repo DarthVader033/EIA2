@@ -1,194 +1,246 @@
-// Namespace entfernt, da er nicht benötigt wird
+namespace L09_Ententeich {
+    window.addEventListener("load", handleLoad);
+    export let crc2: CanvasRenderingContext2D;
+    let canvas: HTMLCanvasElement;
+    let background: Background;
+    let ducks: Ente[] = [];
 
-class Background {
-    canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
-    clouds: Cloud[] = []; // Array für die Wolken
+    function handleLoad(_event: Event): void {
+        canvas = document.querySelector("canvas")!;
+        crc2 = canvas.getContext("2d")!;
+        canvas.width = 1440;
+        canvas.height = 780;
 
-    constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
-
-        // Wolken erstellen
-        for (let i = 0; i < 3; i++) {
-            const cloud = new Cloud(-100 + i * 200, 50 + Math.random() * 50, 100, 40, 'white', 0.5);
-            this.clouds.push(cloud);
-        }
+        background = new Background(canvas);
+        createDucks();
+        drawScene();
     }
 
-    draw() {
-        // Gras zeichnen
-        this.ctx.fillStyle = '#70B85D'; // Grüne Farbe für das Gras
-        this.ctx.fillRect(0, this.canvas.height * 0.6, this.canvas.width, this.canvas.height * 0.4);
+    function createDucks(): void {
+        for (let i = 0; i < 3; i++) { 
+            const startX = canvas.width * 0.25; 
+            const startY = canvas.height * 0.7 + i * 30; 
+            const duck = new Ente(startX, startY, 1, 20, 'yellow', canvas, crc2);
+            ducks.push(duck);
+        }
+    
+    }
 
-        // Himmel zeichnen
-        this.ctx.fillStyle = '#87CEEB'; // Blaue Farbe für den Himmel
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height * 0.6);
+    function drawScene(): void {
+        moveClouds();
+        drawBackground();
+        drawBushes();
+        drawDucks(); 
+        requestAnimationFrame(drawScene);
+    }
 
-        // Wolken zeichnen und bewegen
-        this.clouds.forEach(cloud => {
+    function moveClouds(): void {
+        background.clouds.forEach(cloud => {
             cloud.move();
-            cloud.draw(this.ctx);
         });
-
-        // Berge zeichnen
-        this.drawMountains(100, this.canvas.height * 0.6, 150, '#A9A9A9'); // Erster Berg
-        this.drawMountains(300, this.canvas.height * 0.6, 120, '#A9A9A9'); // Zweiter Berg
-
-        // Teich zeichnen
-        this.drawPond(250, this.canvas.height * 0.7, 100, 50, '#4682B4'); // Position und Größe des Teichs
     }
 
-    drawMountains(x: number, y: number, height: number, color: string) {
-        this.ctx.fillStyle = color;
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
-        this.ctx.lineTo(x + 75, y - height);
-        this.ctx.lineTo(x + 150, y);
-        this.ctx.closePath();
-        this.ctx.fill();
+    function drawBackground(): void {
+        crc2.clearRect(0, 0, canvas.width, canvas.height);
+        background.draw();
     }
 
-    drawPond(x: number, y: number, width: number, height: number, color: string) {
-        this.ctx.fillStyle = color;
-        this.ctx.beginPath();
-        this.ctx.ellipse(x, y, width, height, 0, 0, Math.PI * 2); // Zeichnet ein Oval
-        this.ctx.closePath();
-        this.ctx.fill();
-    }
-}
-
-class Cloud {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    cloudColor: string;
-    speed: number;
-
-    constructor(x: number, y: number, width: number, height: number, cloudColor: string, speed: number) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.cloudColor = cloudColor;
-        this.speed = speed;
+    function drawBushes(): void {
+        //Büsche
+        drawBush(canvas.width - 100, canvas.height * 0.8, 10, '#556B2F'); 
+        drawBush(canvas.width - 400, canvas.height * 0.7, 10, '#556B2F');
+        drawBush(canvas.width - 900, canvas.height * 0.9, 10, '#556B2F'); 
+        drawBush(canvas.width - 600, canvas.height * 0.65, 10, '#556B2F');
+        drawBush(canvas.width - 500, canvas.height * 0.85, 10, '#556B2F');
+        drawBush(canvas.width - 300, canvas.height * 0.75, 10, '#556B2F');
+        drawBush(canvas.width - 300, canvas.height * 0.75, 10, '#556B2F');
+        drawBush(canvas.width - 800, canvas.height * 0.75, 10, '#556B2F');
     }
 
-    move() {
-        // Bewegung von links nach rechts
-        this.x += this.speed;
+    function drawBush(x: number, y: number, size: number, color: string): void {
+        crc2.fillStyle = color;
+        crc2.beginPath();
+        crc2.arc(x, y, size, 0, 2 * Math.PI);
+        crc2.arc(x + size, y - size, size, 0, 2 * Math.PI);
+        crc2.arc(x - size, y - size, size, 0, 2 * Math.PI);
+        crc2.arc(x + size, y + size, size, 0, 2 * Math.PI);
+        crc2.arc(x - size, y + size, size, 0, 2 * Math.PI);
+        crc2.closePath();
+        crc2.fill();
+    }
 
-        // Wenn die Wolke aus dem Bildschirm herausgeht, wird sie wieder von links eingeführt
-        if (this.x > 800) {
-            this.x = -100;
-            this.y = 50 + Math.random() * 50;
+    function drawDucks(): void {
+        ducks.forEach(duck => {
+            duck.draw();
+            duck.update();
+        });
+    }
+
+    class Background {
+        canvas: HTMLCanvasElement;
+        crc2: CanvasRenderingContext2D;
+        clouds: Wolke[] = [];
+        pondWidth: number = 150;
+        pondHeight: number = 70;
+
+        constructor(canvas: HTMLCanvasElement) {
+            this.canvas = canvas;
+            this.crc2 = canvas.getContext('2d')!;
+
+            for (let i = 0; i < 6; i++) { 
+                const cloud = new Wolke(-200 + i * 250, 50 + Math.random() * 50, 100, 40, 'white', 0.5);
+                this.clouds.push(cloud);
+            }
+        }
+
+        draw(): void {
+            this.crc2.fillStyle = '#70B85D';
+            this.crc2.fillRect(0, this.canvas.height * 0.6, this.canvas.width, this.canvas.height * 0.4);
+
+            this.crc2.fillStyle = '#87CEEB';
+            this.crc2.fillRect(0, 0, this.canvas.width, this.canvas.height * 0.6);
+
+            this.clouds.forEach(cloud => {
+                cloud.draw(this.crc2);
+            });
+
+            // Berge
+            this.drawMountains(100, this.canvas.height * 0.6, 150, '#A9A9A9');
+            this.drawMountains(300, this.canvas.height * 0.6, 120, '#A9A9A9');
+
+            // Teich
+            this.drawPond(250, this.canvas.height * 0.75, 250, 80, '#4682B4');
+        }
+
+        drawMountains(x: number, y: number, height: number, color: string) {
+            this.crc2.fillStyle = color;
+            this.crc2.beginPath();
+            this.crc2.moveTo(x, y);
+            this.crc2.lineTo(x + 75, y - height);
+            this.crc2.lineTo(x + 150, y);
+            this.crc2.closePath();
+            this.crc2.fill();
+        }
+
+        drawPond(x: number, y: number, width: number, height: number, color: string) {
+            this.crc2.fillStyle = color;
+            this.crc2.beginPath();
+            this.crc2.ellipse(x, y, width, height, 0, 0, Math.PI * 2); 
+            this.crc2.closePath();
+            this.crc2.fill();
         }
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = this.cloudColor;
-        ctx.beginPath();
-        ctx.arc(this.x + 20, this.y, 20, 0, Math.PI * 2);
-        ctx.arc(this.x + 50, this.y - 10, 25, 0, Math.PI * 2);
-        ctx.arc(this.x + 90, this.y, 20, 0, Math.PI * 2);
-        ctx.arc(this.x + 120, this.y + 10, 30, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
+    class Wolke {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        cloudColor: string;
+        speed: number;
 
-// Canvas-Element auswählen
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d'); // Zeichenkontext erhalten
+        constructor(x: number, y: number, width: number, height: number, cloudColor: string, speed: number) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.cloudColor = cloudColor;
+            this.speed = speed;
+        }
 
-// Hintergrundobjekt erstellen und zeichnen
-const background = new Background(canvas);
-background.draw();
+        move(): void {
+            //links nach rechts
+            this.x += this.speed;
 
-class Duck {
-    x: number;
-    y: number;
-    speed: number;
-    direction: number;
-    size: number;
-    color: string;
+            if (this.x > 800) {
+                this.x = -100;
+                this.y = 50 + Math.random() * 50;
+            }
+        }
 
-    constructor(x: number, y: number, speed: number, size: number, color: string) {
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.direction = Math.random() * Math.PI * 2; // Zufällige Startrichtung
-        this.size = size;
-        this.color = color;
-    }
-
-    draw() {
-        // Kopf
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 0.6, 0, Math.PI * 2);
-        ctx.fillStyle = 'yellow';
-        ctx.fill();
-        // Körper
-        ctx.beginPath();
-        ctx.arc(this.x, this.y + this.size * 0.5, this.size * 0.8, 0, Math.PI * 2);
-        ctx.fillStyle = 'yellow';
-        ctx.fill();
-        // Schnabel
-        ctx.beginPath();
-        ctx.moveTo(this.x + this.size * 0.8, this.y);
-        ctx.lineTo(this.x + this.size * 1.2, this.y + this.size * 0.2);
-        ctx.lineTo(this.x + this.size * 0.8, this.y);
-        ctx.fillStyle = 'orange';
-        ctx.fill();
-    }
-
-    update() {
-        // Bewegung basierend auf der aktuellen Richtung und Geschwindigkeit
-        this.x += Math.cos(this.direction) * this.speed;
-        this.y += Math.sin(this.direction) * this.speed;
-
-        // Wenn die Ente den Bildschirmrand erreicht, ändert sie die Richtung
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-            this.direction += Math.PI; // Ändere die Richtung um 180 Grad
+        draw(crc2: CanvasRenderingContext2D): void {
+            crc2.fillStyle = this.cloudColor;
+            crc2.beginPath();
+            crc2.arc(this.x + 20, this.y, 20, 0, Math.PI * 2);
+            crc2.arc(this.x + 50, this.y - 10, 25, 0, Math.PI * 2);
+            crc2.arc(this.x + 90, this.y, 20, 0, Math.PI * 2);
+            crc2.arc(this.x + 120, this.y + 10, 30, 0, Math.PI * 2);
+            crc2.fill();
         }
     }
+
+    class Ente {
+        x: number;
+        y: number;
+        speed: number; 
+        direction: number;
+        size: number;
+        color: string;
+        canvas: HTMLCanvasElement;
+        crc2: CanvasRenderingContext2D;
+    
+        constructor(x: number, y: number, speed: number, size: number, color: string, canvas: HTMLCanvasElement, crc2: CanvasRenderingContext2D) {
+            this.x = x;
+            this.y = y;
+            this.speed = speed * 0.5;
+            this.direction = Math.random() * Math.PI * 2;
+            this.size = size;
+            this.color = color;
+            this.canvas = canvas;
+            this.crc2 = crc2;
+        }
+        draw(): void {
+            //Körper
+            this.crc2.beginPath();
+            this.crc2.arc(this.x, this.y, this.size * 0.6, 0, Math.PI * 2);
+            this.crc2.fillStyle = 'yellow';
+            this.crc2.fill();
+
+            //Kopf
+            this.crc2.beginPath();
+            this.crc2.arc(this.x, this.y + this.size * 0.5, this.size * 0.8, 0, Math.PI * 2);
+            this.crc2.fillStyle = 'yellow';
+            this.crc2.fill();
+        
+            // Augen
+             this.crc2.fillStyle = 'black';
+             this.crc2.beginPath();
+             this.crc2.arc(this.x - this.size * 0.2, this.y - this.size * 0.1, 2, 0, Math.PI * 2); // linkes Auge
+             this.crc2.fill();
+             this.crc2.beginPath();
+             this.crc2.arc(this.x + this.size * 0.2, this.y - this.size * 0.1, 2, 0, Math.PI * 2); // rechtes Auge
+             this.crc2.fill();
+
+    
+        }
+
+        update(): void {
+            const grassTopBoundary = this.canvas.height * 0.6; 
+            const grassBottomBoundary = this.canvas.height; 
+            const leftBoundary = this.canvas.width * 0.05; 
+            const rightBoundary = this.canvas.width * 0.3; 
+            
+           
+            const nextX = this.x + Math.cos(this.direction) * this.speed;
+            const nextY = this.y; 
+        
+            
+            if (nextX >= leftBoundary && nextX <= rightBoundary) { 
+                this.x = nextX;
+            } else {
+                this.direction += Math.PI; 
+            }
+        }
+
+
+        
+    }
+
+    
 }
 
-// Enten erstellen
-const ducks: Duck[] = [];
-for (let i = 0; i < 3; i++) {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height * 0.5 + canvas.height * 0.5; // Enten im unteren Bereich des Teichs platzieren
-    const speed = Math.random() * 2 + 1; // Zufällige Geschwindigkeit zwischen 1 und 3
-    const size = Math.random() * 20 + 20; // Zufällige Größe zwischen 20 und 40
-    const color = 'yellow'; // Enten sind gelb
-    ducks.push(new Duck(x, y, speed, size, color));
-}
+            
+        
+        
+        
 
-function drawDucks() {
-    ducks.forEach((duck) => {
-        duck.draw();
-    });
-}
-
-function updateDucks() {
-    ducks.forEach((duck) => {
-        duck.update();
-    });
-}
-
-// Hauptprogramm
-function drawScene() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Hintergrund zeichnen (Gras, Himmel, Berge, Teich)
-    background.draw();
-
-    // Enten zeichnen und aktualisieren
-    drawDucks();
-    updateDucks();
-
-    requestAnimationFrame(drawScene);
-}
-
-drawScene();
