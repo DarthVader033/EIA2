@@ -2,7 +2,7 @@
 Aufgabe: <Ententeich>
 Name: <Alita Maier>
 Matrikel: <275106>
-Datum: <.06.24>
+Datum: <08.06.24>
 Quellen: <Zusammenarbeit mit Franciska Egri>
 */
    
@@ -72,7 +72,7 @@ Quellen: <Zusammenarbeit mit Franciska Egri>
 
 
     function createDucks(): void {
-        for (let i = 0; i < 5; i++) { 
+        for (let i = 0; i < 3; i++) { 
             const startX = canvas.width * 0.25; 
             const startY = canvas.height * 0.7 + i * 30; 
             const duck = new Ente(startX, startY, 1, 20, 'yellow', canvas, crc2);
