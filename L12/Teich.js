@@ -358,13 +358,13 @@ var L12_Ententeich;
             this.crc2.fill();
         }
         update() {
-            // Bewegung in Richtung Ziel (Brotkrümel)
+            // Bewegung in Richtung Brotkrümel
             if (this.target) {
                 let dx = this.target.x - this.position.x;
                 let dy = this.target.y - this.position.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 5) {
-                    // Ziel erreicht, Brotkrümel aufessen
+                    // Ziel erreicht, Brotkrümel essen
                     breadCrumbs = breadCrumbs.filter(crumb => crumb.position !== this.target);
                     this.target = null;
                 }
