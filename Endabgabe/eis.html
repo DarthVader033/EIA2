@@ -1,0 +1,138 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="eis.js" ></script>
+    <script src="eis.ts" ></script>
+    <link rel="stylesheet" href="eis.css">
+    <title>Eisdiele</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            display: flex;
+            border: 2px solid #000;
+            padding: 2px;
+            background-color: #ffffff;
+            width: 15%;
+            height: 60%;
+            box-sizing: border-box;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        
+       
+        #menu {
+            margin-bottom: 10px;
+        }
+        #waitingArea, #seatedArea {
+            margin-bottom: 5px;
+        }
+        #ordersContainer {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .orderButton {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="iceCreamShop">
+            <h1 class="ice-cream-shop"> Eisdiele</h1>
+            <div id="menu">
+                <h2>Menü</h2>
+                <div id="flavors"></div>
+                <div id="sauces"></div>
+                <h3>Eis 1.00 €</h3>
+                <h3>Sauce 1.00 €</h3>
+                <h3>Topping Gratis-Aktion</h3>
+            </div>
+            <form>
+                Bestellungen: <input list="state" 
+                id="states">
+            
+                <datalist id="state">
+                    <option value="1. 🍓🍫🥥"></option>
+                    <option value="2. 🍦🫐"></option>
+                    <option value="3. 🍓🍦"></option>
+                    <option value="4. 🍦🍫"></option>
+                    <option value="5. 🍓🫐"></option>
+                    <option value="6. 🍫🍯"></option>
+                </datalist>
+            </form>
+            <button id="giveCustomer">Fertig</button>
+            <button id="pay">Zahlen</button>
+            <div id="income">
+                <h2>Einnahmen: <span id="totalIncome">0</span> €</h2>
+            </div>
+        </div>
+        <div id="customers">
+            
+        </div>
+        <div class="square"></div>
+    </div>
+    <div id="room">
+        <div id="counter">
+
+            
+            <div id="iceCreamCup">🍦</div>
+            <div id="sauces">
+                <h3>Saucen 🧃</h3>
+                <ul>
+                    <button id="addSauce">🍯 Karamell, 🫐 Blaubeere</button>
+                   
+                </ul>
+            </div>
+            <div id="toppings">
+                <h3>Toppings</h3>
+                <ul>
+                    <button id="addTopping">🥥 Kokos</button>
+                </ul>
+            </div>
+            
+            <div id="iceCreamVarieties">
+                <h3>Eissorten 🍨</h3>
+                <ul>
+                    <button id="addFlavor">🍦 Vanille, 🍓 Erdbeere, 🍫 Schokolade</button>
+                </ul>
+            </div>
+            
+           
+       
+    </div>
+
+
+        <canvas id="iceCreamCanvas" width="150" height="200"></canvas>
+        
+        <div id="seatingArea">
+            <div class="table">
+                <div class="chair"></div>
+                <div class="chair"></div>
+            </div>
+            <div class="table">
+                <div class="chair"></div>
+                <div class="chair"></div>
+            </div>
+            <div class="table">
+                <div class="chair"></div>
+                <div class="chair"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

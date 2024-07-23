@@ -1,0 +1,182 @@
+/* Stellt sicher, dass body und html die gesamte Höhe des Viewports einnehmen */
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #f0f8ff; /* Heller Hintergrund */
+}
+
+/*Raum */
+#room {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+    background-color: #e0e0e0; /* Hintergrundfarbe des Raums */
+    border: 2px solid #000; /* Rahmen um den Raum */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/*Tresen */
+#counter {
+    width: 100%;
+    height: 250px;
+    background-color: grey; 
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-radius: 8px;
+}
+
+
+/* Eisbecher Bereich */
+#iceCreamContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Canvas für den Eisbecher */
+#iceCreamCanvas {
+    border: 2px solid #000;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Grüner Hintergrund */
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049; /* Dunkleres Grün bei Hover */
+}
+
+
+
+
+
+/* Zutaten Bereich */
+#ingredients {
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* Stil für den Eisbecher */
+#iceCreamCup {
+    font-size: 80px; /* Größe des Eisbechers */
+    position: absolute;
+    top: 42%;
+    left: 47%;
+    translate: (-50%, -50%);
+}
+
+/* Eissorten und Saucen Container */
+#iceCreamVarieties, #sauces {
+    width: 45%;
+    text-align: center;
+}
+
+/* Liste der Eissorten und Saucen */
+#iceCreamVarieties ul, #sauces ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#iceCreamVarieties li, #sauces li {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+
+/* Stil für den Sitzbereich */
+#seatingArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 150px;
+    justify-content: center;
+    width: 100%;
+    position:fixed;
+    top: 70%;
+    right: auto;
+}
+
+
+
+/* Stil für die Tische */
+.table {
+    width: 120px;
+    height: 120px;
+    background-color: burlywood; /* Hellgrau für die Tische */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 8px;
+}
+
+
+
+/* Stil für die Stühle */
+.chair {
+    width: 50px;
+    height: 50px;
+    background-color: black; /* Braun für die Stühle */
+    border-radius: 50%;
+    margin: 5px;
+   
+}
+
+/* Füge eine kleine Schatteneffekt für den Tisch hinzu */
+.table::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 8px 8px;
+}
+
+/* Stil für die Smileys */
+.smiley {
+    font-size: 48px; /* Größe der Smileys */
+    position: absolute; /* Absolut positioniert für Animation */
+    transition: transform 2s; /* Sanfte Bewegung */  
+    
+}
+
+
+
+
+    
+    
+        
+        
+
+
+
+
+
+
+
+
+
+
